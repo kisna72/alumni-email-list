@@ -21,3 +21,5 @@ class WorkHistory(models.Model):
 	alumni = models.ForeignKey(Alumni)
 
 
+
+
