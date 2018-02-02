@@ -19,3 +19,5 @@ class WorkHistory(models.Model):
 	work_email = models.EmailField()
 	position = models.TextField()
 	alumni = models.ForeignKey(Alumni)
+
+
