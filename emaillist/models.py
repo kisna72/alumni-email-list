@@ -31,25 +31,27 @@ class WorkHistory(TimeStampedModel):
     position = models.TextField()
     alumni = models.ForeignKey(Alumni, on_delete=models.CASCADE)
 
-
-
-
-class OrganizationSecret(TimeStampedModel):
+class Invite(TimeStampedModel):
 
     def randStr():
         N = int(random.uniform(8,24))
         return ''.join(random.SystemRandom().choice(string.ascii_uppercase + string.digits) for _ in range(N))
-
+    choices = (
+        ("staff","staff"),
+        ("owner","owner"),
+        )
 
     secret = models.CharField(max_length=24, default=randStr, unique=True) #Must be unique
     organization = models.ForeignKey(University,  on_delete=models.CASCADE)
     active = models.BooleanField(default = True)
+    level = models.CharField(max_length = 10, choices=choices,default="staff")
 
 """
 
 Auth Model.
 Phase 1:
-User signs up. Creates a University. 
+User signs up. Logs in. If signup link does not have any universityhash 
+If university is not created, 
 Invites other users to signup with a email link. [Email link is generated on the site.]
 Email link can be hash of the id of the organization. Signup will look like 
 - blah.com/signup/hash/
