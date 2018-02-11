@@ -39,6 +39,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     'organizations',
+    'basicauth',
+    'rest_framework',
     'emaillist',
 ]
 
@@ -53,6 +55,12 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'uno_email_list.urls'
+
+
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
+LOGIN_REDIRECT_URL = 'emaillist_home'
+
 
 TEMPLATES = [
     {
