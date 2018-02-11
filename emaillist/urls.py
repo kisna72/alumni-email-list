@@ -18,5 +18,6 @@ from django.urls import path
 from . import views
 
 urlpatterns = [
-    path('signup/',views.organization_signup),
+    path('signuppp/',views.organization_signup),
+    path('',views.home, name="emaillist_home"),
 ]

@@ -1,0 +1,30 @@
+{% extends 'emaillist/base.html' %}
+<!-- Change the extends to whatever app you are using this at -->
+
+
+
+{% block content %}
+
+<div class="container">
+  <h2 class="mt-5 ">Login </h2>
+  <form method="post" class="">
+    {% csrf_token %}
+    {% for field in form %}
+      <p>
+        {{ field.label_tag }}<br>
+        {{ field }}
+        {% if field.help_text %}
+          <small style="color: grey">{{ field.help_text }}</small>
+        {% endif %}
+        {% for error in field.errors %}
+          <p style="color: red">{{ error }}</p>
+        {% endfor %}
+      </p>
+    {% endfor %}
+    <button type="submit">Login</button>
+  </form>
+
+  <p> <a href="/accounts/password_reset/"> Forgot Password </a> </p>
+
+</div>
+{% endblock %}
