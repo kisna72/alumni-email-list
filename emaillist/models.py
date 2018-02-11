@@ -46,12 +46,17 @@ class Invite(TimeStampedModel):
     active = models.BooleanField(default = True)
     level = models.CharField(max_length = 10, choices=choices,default="staff")
 
-"""
 
+"""
 Auth Model.
 Phase 1:
-User signs up. Logs in. If signup link does not have any universityhash 
-If university is not created, 
+User signs up. Logs in. If signup link does not have any university secret associated, then let the user signup.
+If use has no university, ask the user - Please create a University Account to get started.
+
+The user creates university, and then creates invites. or creates Alumnis.
+Lets solve the  
+
+
 Invites other users to signup with a email link. [Email link is generated on the site.]
 Email link can be hash of the id of the organization. Signup will look like 
 - blah.com/signup/hash/
