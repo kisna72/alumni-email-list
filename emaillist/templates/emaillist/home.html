@@ -1,1 +1,21 @@
 {% extends "./base.html" %} 
+
+{% block content %}
+	<div class="container">
+		{% if associated_unis|length < 1 %}
+			<p> Your account is not associated with any University. Please create one, or ask your university staff to get invited.</p>
+			<h4> Existing Universities </h4>
+			
+			<ul>
+			{% for u in universities %}
+				<li>{{u}}</li>
+			{% endfor %}
+			</ul>
+
+		{% endif %}
+
+		<a  href="/" class="btn btn-primary">Add your University</a>
+
+	</div>
+
+{% endblock %}

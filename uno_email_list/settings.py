@@ -39,6 +39,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     'organizations',
+    
+    'django_extensions',
     'basicauth',
     'rest_framework',
     'emaillist',

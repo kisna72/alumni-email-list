@@ -8,6 +8,9 @@ from django_extensions.db.models import TimeStampedModel
 class University(TimeStampedModel):
     university_name = models.TextField()#Name of the university
 
+    def __str__(self):
+        return self.university_name
+
 class UniversityOwner(TimeStampedModel):
     university = models.ForeignKey(University, on_delete=models.CASCADE)
     user = models.ForeignKey(User,  on_delete=models.CASCADE)
