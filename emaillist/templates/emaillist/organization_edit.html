@@ -1,0 +1,15 @@
+{% extends "emaillist/base.html" %}
+
+{% block content %}
+
+<div class="container mt-5">
+	<h2> Edit Organization </h2>
+	<form action="" method="post">
+	    {% csrf_token %}
+	    {{ form }}
+	    <input type="submit" value="Submit" />
+	</form>
+
+</div>
+
+{% endblock %}

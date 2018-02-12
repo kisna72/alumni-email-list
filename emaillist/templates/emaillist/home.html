@@ -9,7 +9,7 @@
 			<p> You are associated with the Following Organizations now </p>
 			<ul>
 			{% for au in associated_unis %}
-				<li>{{au}}</li>
+				<li><a href="{% url 'organization_detail' au.id %}">{{au}} </a> </li>
 
 			{% endfor %}
 			</ul>

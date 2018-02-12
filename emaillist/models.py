@@ -22,7 +22,7 @@ class UniversityStaff(TimeStampedModel):
     user = models.ForeignKey(User,  on_delete=models.CASCADE)
 
     def __str__(self):
-        return self.university.university_name
+        return self.user.username
 
 class Alumni(TimeStampedModel):
     first_name = models.CharField(max_length = 200)

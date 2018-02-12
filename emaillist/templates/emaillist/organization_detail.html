@@ -3,8 +3,8 @@
 {% block content %}
 	<div class="container">
 		<h1>{{organization}}</h1>
-		<a class="btn btn-outline-primary">Add Members</a>
-		<a class="btn btn-outline-primary">Add Owners</a>
+		<a class="btn btn-outline-primary" href="{% url 'edit_organization' organization.id %}">Edit</a>
+		<a class="btn btn-outline-primary" href="{% url 'delete_organization' organization.id %}">Delete</a>
 		<a class="btn btn-outline-primary">Add Alumni</a>
 
 		<h2> Owners </h2>
@@ -12,6 +12,7 @@
 			{% for i in owners %}
 				<li>{{i}}</li>
 			{% endfor %}
+				<li><a href="">Add New Owner</a></li>
 		</ul>
 
 		<h2> Members </h2>
@@ -19,9 +20,8 @@
 			{% for i in staffs %}
 				<li>{{i}}</li>
 			{% endfor %}
+				<li><a href="">Add New Member</a></li>
 		</ul>
-
-		
 
 		<h2> Alumni </h2>
 		<ul>

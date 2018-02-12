@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
+from django.http import HttpRequest
 from .models import University, UniversityOwner, UniversityStaff
 from .forms import UniversityForm
 # Create your views here.
@@ -54,7 +55,7 @@ def add_organization(request):
 @login_required
 def organization_detail(request, organization_pk):
 	"""
-	Details of the Organization.
+	Details of the Organization. Only visible to members or the owners. 
 
 	Name , created, modified
 
@@ -76,40 +77,71 @@ def organization_detail(request, organization_pk):
 	owners = UniversityOwner.objects.filter(university = organization)
 	staffs = UniversityStaff.objects.filter(university = organization)
 	
-	context["organization"] = organization
-	context["owners"] = owners
-	context["staffs"] = staffs
+	if request.user in [i.user for i in owners] or request.user in [x.user for x in staffs]:
+		context["organization"] = organization
+		context["owners"] = owners
+		context["staffs"] = staffs
 
-	return render(request, "emaillist/organization_detail.html", context)
+		return render(request, "emaillist/organization_detail.html", context)
 	
+	return HttpRequest("You are not allowed to be here.")
 
 
 @login_required
-def edit_organization(request, org_id):
+def edit_organization(request, organization_pk):
 	"""
 	Simple form with just the name of the university.
 	Univeristy Owner is automatically assigned to the current owner. 
 	This person has delete access to the University. 
 	Can add other owners. 
 	"""
-	org = get_object_or_404(University, pk = org_id)
+	print("Got here")
+	org = get_object_or_404(University, pk = organization_pk)
 	# Only owner has rights to make changes to the organization.
-	org_owners = UniversityOwner.objects.filter(organization = org, user = request.user)
-	if len(org_owners) > 1:
-		pass
+	owners = UniversityOwner.objects.filter(university = org)
+	if not request.user in [i.user for i in owners]:
+		return HttpRequest("You most be a owner to edit the name of the organization.")
+
 	if request.method == "POST":
-		form = UniversityForm(request.POST)
+		form = UniversityForm(request.POST, instance = org)
 		if form.is_valid():
 			uni = form.save()
-			#Create Uni owner as well. 
-			owner = UniversityOwner.objects.create(university = uni, user = request.user)
-			staff = UniversityStaff.objects.create(university = uni, user = request.user)
-
-			return redirect("emaillist_home")
+			return redirect("organization_detail", organization_pk=uni.id)
 	else:
-		form = UniversityForm()
+		form = UniversityForm(instance = org)
 
 	context = {}
 	context["form"] = form
+	return render(request, "emaillist/organization_edit.html", context)
 
-	return render(request, "emaillist/create_university.html", context)
+
+@login_required
+def delete_organization(request, organization_pk):
+	"""Code to Delete Organization. 
+	"""
+	org = get_object_or_404(University, pk=organization_pk)
+	owners = UniversityOwner.objects.filter(university = org)
+	if not  request.user in [i.user for i in owners]:
+		return HttpRequest("You do not have the permission to delete. Must be owner")
+	if request.method == "POST":
+		org.delete()
+		return redirect("emaillist_home")
+
+	else:
+		print("Show Confirmation")
+
+	return render(request, "emaillist/organization_delete.html")
+
+
+
+
+
+
+
+
+
+
+
+
+
+
