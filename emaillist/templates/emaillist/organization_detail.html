@@ -1,0 +1,35 @@
+{% extends "./base.html" %} 
+
+{% block content %}
+	<div class="container">
+		<h1>{{organization}}</h1>
+		<a class="btn btn-outline-primary">Add Members</a>
+		<a class="btn btn-outline-primary">Add Owners</a>
+		<a class="btn btn-outline-primary">Add Alumni</a>
+
+		<h2> Owners </h2>
+		<ul>
+			{% for i in owners %}
+				<li>{{i}}</li>
+			{% endfor %}
+		</ul>
+
+		<h2> Members </h2>
+		<ul>
+			{% for i in staffs %}
+				<li>{{i}}</li>
+			{% endfor %}
+		</ul>
+
+		
+
+		<h2> Alumni </h2>
+		<ul>
+			{% for i in alumni %}
+				<li>{{i}}</li>
+			{% endfor %}
+		</ul>
+
+	</div>
+
+{% endblock %}
