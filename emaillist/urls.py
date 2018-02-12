@@ -25,6 +25,12 @@ urlpatterns = [
     path('org/<int:organization_pk>/edit/',views.edit_organization, name="edit_organization"),
     path('org/<int:organization_pk>/delete/',views.delete_organization, name="delete_organization"),
 
+    path('org/<int:organization_pk>/add_owner', views.add_organization_owner, name='add_organization_owner'),
+    path('org/<int:organization_pk>/remove_owner', views.remove_organization_owner, name='remove_organization_owner'),
+    path('org/<int:organization_pk>/add_staff', views.add_organization_staff, name='add_organization_staff'),
+    path('org/<int:organization_pk>/remove_owner', views.remove_organization_staff, name='remove_organization_staff'),
+
+
 
 
 ]

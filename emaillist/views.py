@@ -134,6 +134,17 @@ def delete_organization(request, organization_pk):
 
 
 
+def add_organization_owner(request):
+	pass
+
+def remove_organization_owner(request):
+	pass
+
+def add_organization_staff(request):
+	pass
+
+def remove_organization_staff(request):
+	pass
 
 
 

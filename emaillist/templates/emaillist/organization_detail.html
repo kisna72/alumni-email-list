@@ -3,32 +3,70 @@
 {% block content %}
 	<div class="container">
 		<h1>{{organization}}</h1>
-		<a class="btn btn-outline-primary" href="{% url 'edit_organization' organization.id %}">Edit</a>
-		<a class="btn btn-outline-primary" href="{% url 'delete_organization' organization.id %}">Delete</a>
-		<a class="btn btn-outline-primary">Add Alumni</a>
 
-		<h2> Owners </h2>
-		<ul>
-			{% for i in owners %}
-				<li>{{i}}</li>
-			{% endfor %}
-				<li><a href="">Add New Owner</a></li>
-		</ul>
 
-		<h2> Members </h2>
-		<ul>
-			{% for i in staffs %}
-				<li>{{i}}</li>
-			{% endfor %}
-				<li><a href="">Add New Member</a></li>
+		<ul class="nav nav-tabs" id="myTab" role="tablist">
+			<li class="nav-item">
+			    <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">Alumni List Management</a>
+			</li>
+		    <li class="nav-item">
+		        <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">User Management</a>
+		    </li>
+		    <li class="nav-item">
+		        <a class="nav-link" id="contact-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact" aria-selected="false">Organization Management</a>
+		    </li>
 		</ul>
+		<div class="tab-content" id="myTabContent">
+		    <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+		    	<h2> Alumni </h2>
+				<ul>
+					{% for i in alumni %}
+						<li>{{i}}</li>
+					{% endfor %}
+						<li><a href="">Add Alumni</a>
+				</ul>
 
-		<h2> Alumni </h2>
-		<ul>
-			{% for i in alumni %}
-				<li>{{i}}</li>
-			{% endfor %}
-		</ul>
+
+		    </div>
+
+
+		    <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+
+				<h2> Owners </h2>
+				<ul>
+					{% for i in owners %}
+						<li>{{i}}</li>
+					{% endfor %}
+						<li><a href="">Add New Owner</a></li>
+				</ul>
+
+				<h2> Members </h2>
+				<ul>
+					{% for i in staffs %}
+						<li>{{i}}</li>
+					{% endfor %}
+						<li><a href="">Add New Member</a></li>
+				</ul>
+
+
+		    </div>
+
+
+		    <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">
+		    	<p> Please note that any actions performed here are unreversible </p>
+				<a class="btn btn-outline-danger" href="{% url 'edit_organization' organization.id %}">Edit</a>
+				<a class="btn btn-outline-danger" href="{% url 'delete_organization' organization.id %}">Delete</a>
+		    </div>
+		</div>
+
+
+
+
+		
+
+
+
+
 
 	</div>
 
