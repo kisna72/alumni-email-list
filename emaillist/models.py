@@ -1,12 +1,11 @@
 from django.db import models
 from django.contrib.auth.models import User 
-from organizations.models import Organization, OrganizationUser, OrganizationOwner
 from django_extensions.db.models import TimeStampedModel
 
 
 # Create your models here.
 class University(TimeStampedModel):
-    university_name = models.TextField()#Name of the university
+    university_name = models.CharField(max_length = 250)#Name of the university
 
     def __str__(self):
         return self.university_name
@@ -15,9 +14,15 @@ class UniversityOwner(TimeStampedModel):
     university = models.ForeignKey(University, on_delete=models.CASCADE)
     user = models.ForeignKey(User,  on_delete=models.CASCADE)
 
+    def __str__(self):
+        return self.user.username
+
 class UniversityStaff(TimeStampedModel):
     university = models.ForeignKey(University, on_delete=models.CASCADE)
-    user = models.ForeignKey(User,  on_delete=models.CASCADE)  
+    user = models.ForeignKey(User,  on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.university.university_name
 
 class Alumni(TimeStampedModel):
     first_name = models.CharField(max_length = 200)

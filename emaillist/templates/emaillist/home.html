@@ -2,9 +2,23 @@
 
 {% block content %}
 	<div class="container">
-		{% if associated_unis|length < 1 %}
+		{% if len_associated_unis %}
 			<p> Your account is not associated with any University. Please create one, or ask your university staff to get invited.</p>
+		
+		{% else %}
+			<p> You are associated with the Following Organizations now </p>
+			<ul>
+			{% for au in associated_unis %}
+				<li>{{au}}</li>
+
+			{% endfor %}
+			</ul>
+
+		{% endif %}
+
 			<h4> Existing Universities </h4>
+
+			<p> If you do not see your organization here, you can create a new organization </p>
 			
 			<ul>
 			{% for u in universities %}
@@ -12,9 +26,9 @@
 			{% endfor %}
 			</ul>
 
-		{% endif %}
+		
 
-		<a  href="/" class="btn btn-primary">Add your University</a>
+		<a  href="/add_organization/" class="btn btn-primary">Add your University</a>
 
 	</div>
 
