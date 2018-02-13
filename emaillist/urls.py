@@ -20,7 +20,7 @@ from . import views
 urlpatterns = [
     path('',views.home, name="emaillist_home"),
     path('add_organization/',views.add_organization, name="organization_add"),
-    path('org/<int:organization_pk>/', views.organization_detail, name='organization_detail'),
+    path('org/<int:organization_pk>/', views.organization_dashboard, name='organization_detail'),
     #path('org/(?P<organization_pk>[\d]+)/$',views.organization_detail, name="organization_detail"),
     path('org/<int:organization_pk>/edit/',views.edit_organization, name="edit_organization"),
     path('org/<int:organization_pk>/delete/',views.delete_organization, name="delete_organization"),

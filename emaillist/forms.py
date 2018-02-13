@@ -21,7 +21,7 @@ class AlumniForm(ModelForm):
 		grad_semester_choices = [(sem,sem) for sem in ["Fall","Summer","Spring","other"]]
 
 		current_year = timezone.now().year
-		years = [(year, year) for year in range(current_year+5, 1900 , -1) ]
+		years = [(year, year) for year in range(current_year+2, 1900 , -1) ]
 
 
 		widgets={

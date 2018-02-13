@@ -53,7 +53,7 @@ def add_organization(request):
 
 
 @login_required
-def organization_detail(request, organization_pk):
+def organization_dashboard(request, organization_pk):
 	"""
 	Details of the Organization. Only visible to members or the owners. 
 
@@ -83,7 +83,7 @@ def organization_detail(request, organization_pk):
 		context["staffs"] = staffs
 		context["alumni"] = Alumni.objects.filter(university = organization)
 
-		return render(request, "emaillist/organization_detail.html", context)
+		return render(request, "emaillist/organization_dashboard.html", context)
 	
 	return HttpRequest("You are not allowed to be here.")
 
@@ -146,7 +146,9 @@ def add_alumni(request, organization_pk):
 	university = get_object_or_404(University, pk = organization_pk)
 	owners = UniversityOwner.objects.filter(university = university)
 	staffs = UniversityStaff.objects.filter(university = university)
-	
+	context = {}
+	context["organization"] = university
+
 	if request.user in [i.user for i in owners] or request.user in [x.user for x in staffs]:
 		if request.method == "POST":
 			form = AlumniForm(request.POST)
@@ -159,10 +161,10 @@ def add_alumni(request, organization_pk):
 		else:
 			form = AlumniForm()
 
-		context = {}
+
 		context["form"] = form
 
-		return render(request, "emaillist/create_organization.html", context)
+		return render(request, "emaillist/alumni_create.html", context)
 
 	else:
 		return HttpRequest("You must be Owner or a Member of the organization to Add alumni")
