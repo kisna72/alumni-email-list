@@ -13,7 +13,7 @@
 	    	<br>
 	    	Graduation: {{alumni.graduation_month}} | {{alumni.graduation_year}}
 	    </p>
-	    <small>{{alumni.university.university_name}}</small>
+	    <small>{{alumni.university.name}}</small>
 	    {% if not hide_btns %}
 	    <p>
 	    	<a class="btn btn-outline-warning" href="{% url 'edit_alumni' organization.id alumni.id %}">Edit</a>

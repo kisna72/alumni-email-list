@@ -46,7 +46,7 @@ INSTALLED_APPS = [
 
     #Third Party
     'crispy_forms',
-    'invitations', #If used all-auth must come after all-auth
+    #'invitations', #If used all-auth must come after all-auth
 
 ]
 

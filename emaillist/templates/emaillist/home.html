@@ -19,7 +19,7 @@
 			<p> You are associated with the Following organization now. Please click on any to see the details. </p>
 			<ul>
 			{% for au in associated_unis %}
-				<li><a href="{% url 'organization_detail' au.id %}">{{au.university.university_name}} </a> </li>
+				<li><a href="{% url 'organization_detail' au.id %}">{{au.university.name}} </a> </li>
 
 			{% endfor %}
 			</ul>

@@ -5,10 +5,10 @@ from django_extensions.db.models import TimeStampedModel
 
 # Create your models here.
 class University(TimeStampedModel):
-    university_name = models.CharField(max_length = 250)#Name of the university
+    name = models.CharField(max_length = 250)#Name of the university
 
     def __str__(self):
-        return self.university_name
+        return self.name
 
 class UniversityOwner(TimeStampedModel):
     university = models.ForeignKey(University, on_delete=models.CASCADE)
