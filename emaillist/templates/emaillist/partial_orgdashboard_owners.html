@@ -1,0 +1,52 @@
+	<h2> Owners </h2>
+	<p> Owners have the following rights:</p>
+	<ul>
+		<li>Add and Remove other owners</li>
+		<li>Edit the name of the university</li>
+		<li>Add and Remove Alumni Information </li>
+		<li>Delete the organization with all associated alumni data </li>
+	</ul> 
+	
+	<p> Current Owners </p>
+	<ul id="owner_list">
+		{% for i in owners %}
+			<li>{{i}}</li>
+		{% endfor %}
+	</ul>
+
+	<p> Add New Owners </p>
+	<div class="input-group mb-3">
+		<input type="text" id="invite_owner_email" class="form-control" placeholder="Recipient's Email Address used to sign up" aria-label="Recipient's username" aria-describedby="invite_owner">
+		<div class="input-group-append">
+		    <button class="btn btn-primary" data-url="{% url 'add_organization_owner' organization.id %}" id="invite_owner">Invite To become Owner</button>
+		</div>
+
+	</div>
+
+	<p class="error" id="invite_owner_message"></p>
+
+
+	<h2> Members </h2>
+	<p> Members have the following access </p>
+	<ul>
+		<li>Add and remove New Alumni </li>
+		<li>Add other members </li>
+	</ul>
+
+	<p> Current Members </p>
+	<ul>
+		{% for i in staffs %}
+			<li>{{i}}</li>
+		{% endfor %}
+	</ul>
+	<p> Add New Members </p>
+	<div class="input-group mb-3">
+		<input type="text" id="invite_staff_email" class="form-control" placeholder="Recipient's Email Address used to sign up" aria-label="Recipient's username" aria-describedby="invite_staff">
+		<div class="input-group-append">
+		    <button class="btn btn-primary" data-url="{% url 'add_organization_staff' organization.id %}" id="invite_staff">Invite To become Staff</button>
+		</div>
+	</div>
+
+	<p class="error" id="invite_staff_message"></p>
+
+

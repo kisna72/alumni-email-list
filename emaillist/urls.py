@@ -35,6 +35,4 @@ urlpatterns = [
     path('org/<int:organization_pk>/alumni/<int:alumni_pk>/delete/',views.delete_alumni, name="delete_alumni"),
 
 
-
-
 ]

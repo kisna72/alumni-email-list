@@ -3,6 +3,8 @@ from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 from .models import University, UniversityOwner, UniversityStaff, Alumni
 from .forms import UniversityForm, AlumniForm
+from django.contrib.auth.models import User
+from django.core.exceptions import ObjectDoesNotExist
 # Create your views here.
 # Step 1 - Signup with a username password. 
 
@@ -85,7 +87,7 @@ def organization_dashboard(request, organization_pk):
 
 		return render(request, "emaillist/organization_dashboard.html", context)
 	
-	return HttpRequest("You are not allowed to be here.")
+	return HttpResponse("You are not allowed to be here.")
 
 
 @login_required
@@ -101,7 +103,7 @@ def edit_organization(request, organization_pk):
 	# Only owner has rights to make changes to the organization.
 	owners = UniversityOwner.objects.filter(university = org)
 	if not request.user in [i.user for i in owners]:
-		return HttpRequest("You most be a owner to edit the name of the organization.")
+		return HttpResponse("You most be a owner to edit the name of the organization.")
 
 	if request.method == "POST":
 		form = UniversityForm(request.POST, instance = org)
@@ -213,30 +215,83 @@ def delete_alumni(request, organization_pk, alumni_pk):
 	alumni = get_object_or_404(Alumni, pk = alumni_pk)
 
 	context["alumni"] = alumni
-
-	if not request.user in [i.user for i in owners]:
-		return HttpResponse("You are not a owner")
-	if not request.user in [x.user for x in staffs]:
-		return HttpResponse("You do not have the permission to delete. Must be owner")
-	if request.method == "POST":
-		alumni.delete()
-		return redirect("organization_detail", alumni.university.id )
-
-	else:
-		print("Show Confirmation")
 	context["organization"] = university
-	return render(request, "emaillist/alumni_delete.html", context)
+
+	if request.user in [i.user for i in owners]:
+		if request.method == "POST":
+			alumni.delete()
+			return redirect("organization_detail", alumni.university.id )
+		else:
+			return render(request, "emaillist/alumni_delete.html", context)
+	else:
+		return HttpResponse("You are not a owner. Only owners are allowed to delete alumni.")
+	
+
+def add_organization_owner(request, organization_pk):
+	"""Check if the request.user is owner of the organization. If yes, let him/her add the requested email.
+	If no, send a http request saying hey you are not allowed.
+	"""
+	print(organization_pk)
+	organization = get_object_or_404(University, pk=int(organization_pk) )
+	print("Got the organization")
+	print(organization)
+	owners = UniversityOwner.objects.filter(university = organization)
+
+	email = request.POST["email"]
+	if request.user in [i.user for i in owners]:
+		
+		try:
+			check_user = User.objects.get(email = email)
+			if not check_user in [i.user for i in owners]:
+				owner_user = UniversityOwner.objects.create(university=organization,user=check_user)
+				owner_user = UniversityStaff.objects.create(university=organization,user=check_user)
+				return HttpResponse("Made this user both owner and a member. Please reload the page.")
+			else:
+				return HttpResponse("The user is already an Owner.")
+		except ObjectDoesNotExist:
+			return HttpResponse("This user doesnot exist in the system. Please ask them to signup first.")
+		
+		return HttpResponse("You have access.")
+		pass
+
+	return HttpResponse("You are not an owner. Only owners are allowed to add other owners")
+
+
+def add_organization_staff(request, organization_pk):
+	"""Check if the request.user is owner of the organization. If yes, let him/her add the requested email.
+	If no, send a http request saying hey you are not allowed.
+	"""
+	print(organization_pk)
+	organization = get_object_or_404(University, pk=int(organization_pk) )
+	print("Got the organization")
+	print(organization)
+	owners = UniversityOwner.objects.filter(university = organization)
+	staffs = UniversityStaff.objects.filter(university = organization)
+
+	email = request.POST["email"]
+	if request.user in [i.user for i in owners] or request.user in [i.user for i in staffs]:
+		
+		try:
+			check_user = User.objects.get(email = email)
+			if not check_user in [i.user for i in staffs]:
+				owner_user = UniversityStaff.objects.create(university=organization,user=check_user)
+				return HttpResponse("Done. Please reload the page.")
+			else:
+				return HttpResponse("The user is already a Member.")
+		except ObjectDoesNotExist:
+			return HttpResponse("This user doesnot exist in the system. Please ask them to signup first.")
+		
+		return HttpResponse("You have access, but something went wrong")
+		
+
+	return HttpResponse("You are not an Member or Owner. Only owners and Members are allowed to add other members")
 
 
 
-def add_organization_owner(request):
-	pass
 
 def remove_organization_owner(request):
 	pass
 
-def add_organization_staff(request):
-	pass
 
 def remove_organization_staff(request):
 	pass

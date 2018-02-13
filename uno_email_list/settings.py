@@ -38,14 +38,24 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.humanize',
+    'django.contrib.sites',
+
 
     'basicauth',
     'emaillist',
+
+    #Third Party
     'crispy_forms',
+    'invitations', #If used all-auth must come after all-auth
 
 ]
 
+SITE_ID = 1
+INVITATIONS_SIGNUP_REDIRECT = "signup"
+LOGIN_URL = "login"
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+LOGIN_REDIRECT_URL = 'emaillist_home'
 
 
 MIDDLEWARE = [
@@ -61,9 +71,6 @@ MIDDLEWARE = [
 ROOT_URLCONF = 'uno_email_list.urls'
 
 
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
-
-LOGIN_REDIRECT_URL = 'emaillist_home'
 
 
 TEMPLATES = [

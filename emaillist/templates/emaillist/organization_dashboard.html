@@ -103,52 +103,12 @@
 
 				<!-- <button data-toggle="collapse" data-target="#demo">Collapsible</button> -->
 
-				<div id="add_alumni" class="collapse">
-				<p>Add a New Alumni Here. Form Goes here.</p>
-					<form>
-
-					</form>
-				</div>
-
 		    </div>
 
 
 
 		    <div class="tab-pane fade" id="owners" role="tabpanel" aria-labelledby="owners-tab">
-
-				<h2> Owners </h2>
-				<p> Owners have the following rights:</p>
-				<ul>
-					<li>Add and Remove other owners</li>
-					<li>Edit the name of the university</li>
-					<li>Add and Remove Alumni Information </li>
-					<li>Delete the organization with all associated alumni data </li>
-				</ul> 
-				
-				<p> Current Owners </p>
-				<ul>
-					{% for i in owners %}
-						<li>{{i}}</li>
-					{% endfor %}
-						<li><a href="">Add New Owner</a></li>
-				</ul>
-
-				<h2> Members </h2>
-				<p> Members have the following access </p>
-				<ul>
-					<li>Add and remove New Alumni </li>
-					<li>Add other members </li>
-				</ul>
-
-				<p> Current Members </p>
-				<ul>
-					{% for i in staffs %}
-						<li>{{i}}</li>
-					{% endfor %}
-						<li><a href="">Add New Member</a></li>
-				</ul>
-
-
+		    		{% include "emaillist/partial_orgdashboard_owners.html" with owners=owners staff=staff %}
 		    </div>
 
 
@@ -160,14 +120,15 @@
 		</div>
 
 
-
-
-		
-
-
-
-
-
 	</div>
 
 {% endblock %}
+
+
+{% block js %}
+{% load static %}
+<script src="{% static "emaillist/invites.js" %}"></script>
+
+	
+{% endblock %}
+

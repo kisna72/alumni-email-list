@@ -26,7 +26,7 @@ password_reset_confirm_template = "basicauth/password_reset_confirm.html"
 password_reset_completed_template = "basicauth/password_reset_complete.html"
 
 urlpatterns = [
-    path('signup/',views.signup),
+    path('signup/',views.signup, name="signup"),
 
 	path('login/', authviews.LoginView.as_view(template_name=login_template), name='login'),
 	path('logoutconfirm/', views.logoutconfirm, name='logoutconfirm'),#Todo...
