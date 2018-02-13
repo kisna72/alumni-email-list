@@ -1,0 +1,26 @@
+{% extends "emaillist/base.html" %}
+
+{% block content %}
+
+<div class="container mt-5">
+
+	<nav aria-label="breadcrumb" class="mt-5 mb-5">
+	  <ol class="breadcrumb">
+	    <li class="breadcrumb-item"><a href="/">List of Organizations</a></li>
+	    <li class="breadcrumb-item"><a href="{% url 'organization_detail' organization.id %}"> {{organization}} Dahsboard </a> </li>
+	    <li class="breadcrumb-item active" aria-current="page">Delete Alumni</li>
+	  </ol>
+	</nav>
+
+	{% load crispy_forms_tags %}
+
+	<h2> Edit Alumni </h2>
+	<form action="" method="post">
+	    {% csrf_token %}
+	    {{ form|crispy }}
+	    <input type="submit" value="Submit" />
+	</form>
+
+</div>
+
+{% endblock %}

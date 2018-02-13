@@ -1,0 +1,25 @@
+{% load humanize %}
+<div class="col-md-4">
+	<div class="list-group mt-3 mb-3">
+	  <div  class="list-group-item list-group-item-action flex-column align-items-start ">
+	    <div class="d-flex w-100 justify-content-between">
+	      <h5 class="mb-1">{{alumni.full_name}}</h5>
+	      <small>Added {{alumni.created|naturalday}}</small>
+	    </div>
+	    <p class="mb-1">
+	    	Email : {{alumni.email_address}}
+	    	<br>
+	    	phone : {{alumni.phone_number}}
+	    	<br>
+	    	Graduation: {{alumni.graduation_month}} | {{alumni.graduation_year}}
+	    </p>
+	    <small>{{alumni.university.university_name}}</small>
+	    {% if not hide_btns %}
+	    <p>
+	    	<a class="btn btn-outline-danger" href="{% url 'edit_alumni' organization.id alumni.id %}">Edit</a>
+			<a class="btn btn-outline-danger" href="{% url 'delete_alumni' organization.id alumni.id %}">Delete</a>
+	    </p>
+	    {% endif %}
+	  </div>
+	</div>
+</div>

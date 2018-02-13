@@ -1,6 +1,8 @@
 {% extends "./base.html" %} 
 
 {% block content %}
+
+{% load humanize %}
 	<div class="container">
 
 		<nav aria-label="breadcrumb" class="mt-5 mb-5">
@@ -31,15 +33,20 @@
 		<!-- content of the Tabbed Menu - managed by IDs. -->
 		<div class="tab-content" id="myTabContent">
 		    <div class="tab-pane fade show active" id="alumni" role="tabpanel" aria-labelledby="alumni-tab">
-		    	<!-- <h2> Alumni </h2> -->
-				<ul>
-					{% for i in alumni %}
-						<li>{{i}}</li>
-					{% endfor %}
-						<li><a data-toggle="collapse-not" data-target="#add_alumni" href="{% url 'alumni_add' organization.id  %}">Add Alumni</a>
-				</ul>
+		    	<h2> Alumni </h2>
+				<div class="row">
 
-				<button data-toggle="collapse" data-target="#demo">Collapsible</button>
+					{% for i in alumni %}
+						{% include "emaillist/alumni_details_partial.html" with alumni=i %}
+					{% endfor %}
+				</div>
+
+				<a class="btn btn-outline-primary" href="{% url 'alumni_add' organization.id  %}">Add Alumni</a>
+
+
+
+
+				<!-- <button data-toggle="collapse" data-target="#demo">Collapsible</button> -->
 
 				<div id="add_alumni" class="collapse">
 				<p>Add a New Alumni Here. Form Goes here.</p>

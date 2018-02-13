@@ -30,7 +30,9 @@ urlpatterns = [
     path('org/<int:organization_pk>/add_staff', views.add_organization_staff, name='add_organization_staff'),
     path('org/<int:organization_pk>/remove_owner', views.remove_organization_staff, name='remove_organization_staff'),
 
-    path('org//<int:organization_pk>/alumni/add/',views.add_alumni, name="alumni_add"),
+    path('org/<int:organization_pk>/alumni/add/',views.add_alumni, name="alumni_add"),
+    path('org/<int:organization_pk>/alumni/<int:alumni_pk>/edit/',views.edit_alumni, name="edit_alumni"),
+    path('org/<int:organization_pk>/alumni/<int:alumni_pk>/delete/',views.delete_alumni, name="delete_alumni"),
 
 
 

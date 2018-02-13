@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
-from django.http import HttpRequest
+from django.http import HttpResponse
 from .models import University, UniversityOwner, UniversityStaff, Alumni
 from .forms import UniversityForm, AlumniForm
 # Create your views here.
@@ -136,28 +136,95 @@ def delete_organization(request, organization_pk):
 	return render(request, "emaillist/organization_delete.html", context)
 
 
+@login_required
 def add_alumni(request, organization_pk):
 	"""
 	Form to add information about the Alumni.
 	Take Organization from the url.
 	"""
+	#1. Ensure that the logged in User is a Member or a Onwer of the organization.
+	university = get_object_or_404(University, pk = organization_pk)
+	owners = UniversityOwner.objects.filter(university = university)
+	staffs = UniversityStaff.objects.filter(university = university)
+	
+	if request.user in [i.user for i in owners] or request.user in [x.user for x in staffs]:
+		if request.method == "POST":
+			form = AlumniForm(request.POST)
+			if form.is_valid():
+				alumni = form.save(commit=False)
+				alumni.university = university
+				alumni.save()
+				#Create Uni owner as well. 
+				return redirect("organization_detail", alumni.university.id )
+		else:
+			form = AlumniForm()
 
-	if request.method == "POST":
-		form = AlumniForm(request.POST)
-		university = get_object_or_404(University, pk = organization_pk)
-		if form.is_valid():
-			alumni = form.save(commit=False)
-			alumni.university = university
-			alumni.save()
-			#Create Uni owner as well. 
-			return redirect("organization_detail", alumni.university.id )
+		context = {}
+		context["form"] = form
+
+		return render(request, "emaillist/create_organization.html", context)
+
 	else:
-		form = AlumniForm()
+		return HttpRequest("You must be Owner or a Member of the organization to Add alumni")
 
+def edit_alumni(request, organization_pk, alumni_pk):
+	"""
+	Form to add information about the Alumni.
+	Take Organization from the url.
+	"""
+	university = get_object_or_404(University, pk = organization_pk)
+	owners = UniversityOwner.objects.filter(university = university)
+	staffs = UniversityStaff.objects.filter(university = university)
+
+	alumni = get_object_or_404(Alumni, pk = alumni_pk)
 	context = {}
-	context["form"] = form
+	context["organization"] = university 
+	context["alumni"] = alumni
+	if request.user in [i.user for i in owners] or request.user in [x.user for x in staffs]:
+		if request.method == "POST":
+			form = AlumniForm(request.POST, instance = alumni)
+			if form.is_valid():
+				alumni = form.save()
+				#alumni.university = university
+				#alumni.save()
+				#Create Uni owner as well.
+				return redirect("organization_detail", alumni.university.id )
+		else:
+			form = AlumniForm(instance = alumni)
 
-	return render(request, "emaillist/create_organization.html", context)
+		
+		context["form"] = form
+
+		return render(request, "emaillist/alumni_edit.html", context)
+
+	else:
+		return HttpResponse("You must be Owner or a Member of the organization to Add alumni")
+
+def delete_alumni(request, organization_pk, alumni_pk):
+	"""Code to Delete Organization. 
+	"""
+	context = {}
+	university = get_object_or_404(University, pk = organization_pk)
+	owners = UniversityOwner.objects.filter(university = university)
+	staffs = UniversityStaff.objects.filter(university = university)
+
+	alumni = get_object_or_404(Alumni, pk = alumni_pk)
+
+	context["alumni"] = alumni
+
+	if not request.user in [i.user for i in owners]:
+		return HttpResponse("You are not a owner")
+	if not request.user in [x.user for x in staffs]:
+		return HttpResponse("You do not have the permission to delete. Must be owner")
+	if request.method == "POST":
+		alumni.delete()
+		return redirect("organization_detail", alumni.university.id )
+
+	else:
+		print("Show Confirmation")
+	context["organization"] = university
+	return render(request, "emaillist/alumni_delete.html", context)
+
 
 
 def add_organization_owner(request):

@@ -1,0 +1,33 @@
+{% extends "./base.html" %} 
+
+{% block content %}
+	<div class="container">
+
+		<nav aria-label="breadcrumb" class="mt-5 mb-5">
+		  <ol class="breadcrumb">
+		    <li class="breadcrumb-item"><a href="/">List of Organizations</a></li>
+		    <li class="breadcrumb-item"><a href="{% url 'organization_detail' organization.id %}"> {{organization}} Dahsboard </a> </li>
+		    <li class="breadcrumb-item active" aria-current="page">Edit Alumni</li>
+		  </ol>
+		</nav>
+
+
+		{% include "emaillist/alumni_details_partial.html" with alumni=alumni organization=organization hide_btns=True %}
+
+		<br>
+		<p> Are you sure you want to delete this alumni?</p>
+		<p> This action is unreversible</p>
+
+		<div class="container">
+		  <h4 class="mt-5 "> </h4>
+		  <form method="post">
+		  	{% csrf_token %}
+		    <button class="btn btn-danger type="submit">Confirm Delete</button>
+		  </form>
+		  	<p class="mt-5"></p>
+			<a href="{% url 'organization_detail' organization.id %}"  class="btn btn-outline-primary">Go Back </a>
+		</div>
+
+	</div>
+
+{% endblock %}
