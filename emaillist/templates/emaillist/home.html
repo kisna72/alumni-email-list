@@ -2,13 +2,21 @@
 
 {% block content %}
 	<div class="container">
+		<nav aria-label="breadcrumb" class="mt-5 mb-5">
+		  <ol class="breadcrumb">
+		    <!-- <li class="breadcrumb-item"><a href="#">Home</a></li> -->
+		    <li class="breadcrumb-item active" aria-current="page">List of Organizations</li>
+		    <!-- <li class="breadcrumb-item"><a href="#">Library</a></li> -->
+		    <!-- <li class="breadcrumb-item active" aria-current="page">Data</li> -->
+		  </ol>
+		</nav>
 
 
 		{% if len_associated_unis %}
 			<p> Your account is not associated with any University. Please create one, or ask your university staff to get invited.</p>
 		
 		{% else %}
-			<p> You are associated with the Following organization now </p>
+			<p> You are associated with the Following organization now. Please click on any to see the details. </p>
 			<ul>
 			{% for au in associated_unis %}
 				<li><a href="{% url 'organization_detail' au.id %}">{{au.university.university_name}} </a> </li>

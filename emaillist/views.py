@@ -1,8 +1,8 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.http import HttpRequest
-from .models import University, UniversityOwner, UniversityStaff
-from .forms import UniversityForm
+from .models import University, UniversityOwner, UniversityStaff, Alumni
+from .forms import UniversityForm, AlumniForm
 # Create your views here.
 # Step 1 - Signup with a username password. 
 
@@ -81,6 +81,7 @@ def organization_detail(request, organization_pk):
 		context["organization"] = organization
 		context["owners"] = owners
 		context["staffs"] = staffs
+		context["alumni"] = Alumni.objects.filter(university = organization)
 
 		return render(request, "emaillist/organization_detail.html", context)
 	
@@ -112,6 +113,7 @@ def edit_organization(request, organization_pk):
 
 	context = {}
 	context["form"] = form
+	context["organization"] = org
 	return render(request, "emaillist/organization_edit.html", context)
 
 
@@ -119,6 +121,7 @@ def edit_organization(request, organization_pk):
 def delete_organization(request, organization_pk):
 	"""Code to Delete Organization. 
 	"""
+	context = {}
 	org = get_object_or_404(University, pk=organization_pk)
 	owners = UniversityOwner.objects.filter(university = org)
 	if not  request.user in [i.user for i in owners]:
@@ -129,9 +132,32 @@ def delete_organization(request, organization_pk):
 
 	else:
 		print("Show Confirmation")
+	context["organization"] = org
+	return render(request, "emaillist/organization_delete.html", context)
 
-	return render(request, "emaillist/organization_delete.html")
 
+def add_alumni(request, organization_pk):
+	"""
+	Form to add information about the Alumni.
+	Take Organization from the url.
+	"""
+
+	if request.method == "POST":
+		form = AlumniForm(request.POST)
+		university = get_object_or_404(University, pk = organization_pk)
+		if form.is_valid():
+			alumni = form.save(commit=False)
+			alumni.university = university
+			alumni.save()
+			#Create Uni owner as well. 
+			return redirect("organization_detail", alumni.university.id )
+	else:
+		form = AlumniForm()
+
+	context = {}
+	context["form"] = form
+
+	return render(request, "emaillist/create_organization.html", context)
 
 
 def add_organization_owner(request):

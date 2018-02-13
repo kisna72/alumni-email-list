@@ -25,13 +25,17 @@ class UniversityStaff(TimeStampedModel):
         return self.user.username
 
 class Alumni(TimeStampedModel):
-    first_name = models.CharField(max_length = 200)
-    last_name = models.CharField(max_length = 200)
+    full_name = models.CharField(max_length = 200)
+    #last_name = models.CharField(max_length = 200)
     email_address =  models.EmailField() #primary email address.
-    phone_number = models.TextField()
+    phone_number = models.TextField(blank=True,null=True)
     graduation_year = models.IntegerField()
     graduation_month = models.TextField()
     university = models.ForeignKey(University, on_delete=models.CASCADE)
+
+    def __str__(self):
+        data = {'full_name':self.full_name,'email_address':self.email_address}
+        return "{} : {}".format(self.full_name, self.email_address) 
 
 class WorkHistory(TimeStampedModel):
     company_name = models.TextField()

@@ -2,6 +2,16 @@
 
 {% block content %}
 	<div class="container">
+
+		<nav aria-label="breadcrumb" class="mt-5 mb-5">
+		  <ol class="breadcrumb">
+		    <li class="breadcrumb-item"><a href="/">List of Organizations</a></li>
+		    <li class="breadcrumb-item"><a href="{% url 'organization_detail' organization.id %}"> {{organization}} </a> </li>
+		    <li class="breadcrumb-item active" aria-current="page">Delete?</li>
+		  </ol>
+		</nav>
+
+
 		<h1>{{organization}}</h1>
 
 		<br>
@@ -14,7 +24,7 @@
 		  <h4 class="mt-5 "> </h4>
 		  <form method="post">
 		  	{% csrf_token %}
-		    <button type="submit">Confirm Delete</button>
+		    <button class="btn btn-danger type="submit">Confirm Delete</button>
 		  </form>
 		</div>
 
